@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import Comment from "./Comment";
+import { connect } from "react-redux";
+import { addComment } from '../actionCreators';
 
 /**
  * Comments: takes post id as prop, renders all comments for that post
  * includes form to create new comment
  */
-class Comments extends Component {
+class CommentList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,8 +19,9 @@ class Comments extends Component {
   }
 
   handleSubmit(evt) {
-    evt.preventDefault()
-    //add comment to redux state !!!!
+    evt.preventDefault();
+
+    this.props.addComment(this.props.postId, this.state.comment);
     this.setState({
       comment: ''
     })
@@ -33,12 +36,13 @@ class Comments extends Component {
 
 
   render() {
-    // get comments for post from redux somehow
-    let comments = this.props.comments
+    const { comments, postId } = this.props;
+    console.log(comments);
+    console.log()
     return (
-      <div>
-        {comments.map(comment =>
-          <Comment text={comment} />
+      <div className="comment-list">
+        {comments[postId].map((comment, index) =>
+          <Comment postId={postId} index={index} comment={comment} />
         )}
         <form onSubmit={this.handleSubmit}>
           <input
@@ -46,10 +50,19 @@ class Comments extends Component {
             value={this.state.comment}
             placeholder="Post a comment."
             onChange={this.handleChange} />
+            <button>Comment</button>
         </form>
       </div>
     );
   }
 }
 
-export default Comments;
+function mapStateToProps(state) {
+  return { comments: state.comments };
+}
+
+const mapDispatchToProps = {
+  addComment
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentList);

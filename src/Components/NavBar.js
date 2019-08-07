@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
+import { Nav, NavItem, Navbar } from "reactstrap";
+import "./NavBar.css";
 
 /**
  * NavBar renders the navigation bar
@@ -7,10 +9,16 @@ import { NavLink } from "react-router-dom";
 class NavBar extends Component {
   render() {
     return (
-      <nav className="nav-bar">
-        <NavLink exact to="/">MICROBLOG</NavLink>
-        <NavLink exact to="/new">ADD POST</NavLink>
-      </nav>
+      // <Navbar expand="md">
+        <Nav className="nav-bar">
+          {/* <NavItem> */}
+            <NavLink className="nav-bar-home" exact to="/">MICROBLOG</NavLink>
+          {/* </NavItem> */}
+          {/* <NavItem> */}
+            <NavLink className="nav-bar-new" exact to="/new">ADD POST</NavLink>
+          {/* </NavItem> */}
+        </Nav>
+      // </Navbar>
     )
   }
 }

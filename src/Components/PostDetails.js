@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PostForm from "./PostForm";
+import { connect } from "react-redux";
+import CommentList from "./CommentList";
+import { deletePost } from "../actionCreators";
 
 /**
  * PostDetails: renders post
@@ -19,6 +22,10 @@ class PostDetails extends Component {
 
   handleDelete(evt) {
     // remove post from redux state
+    //call actioncreator to delete
+    //connected from redux
+    let id = this.props.match.params.postid;
+    this.props.deletePost(id);
     this.props.history.push("/");
   }
 
@@ -30,24 +37,31 @@ class PostDetails extends Component {
 
   renderPost() {
     //connected from redux
-    let post = this.props.post;
+    let id = this.props.match.params.postid;
+    let post = this.props.posts[id];
+
     return (
       <div>
         <div>
           <h3>{post.title}</h3>
-          <span>{post.description}</span>
+          <p>{post.description}</p>
           <button onClick={this.showEditForm}>Edit</button>
           <button onClick={this.handleDelete}>Delete</button>
         </div>
         <p>{post.body}</p>
+
+        <div>
+          <CommentList postId={id} />
+        </div>
       </div>
     );
   }
 
   renderForm() {
     //also get from redux
-    let postId = this.props.post.id;
-    return <PostForm history={this.props.history} postId={postId} />;
+    let id = this.props.match.params.postid;
+    let post = this.props.posts[id];
+    return <PostForm history={this.props.history} post={post} postId={id}/>;
   }
 
   render() {
@@ -58,4 +72,14 @@ class PostDetails extends Component {
   }
 }
 
-export default PostDetails;
+function mapStateToProps(state) {
+  return {
+    posts: state.posts
+  }
+}
+
+const mapDispatchToProps = {
+  deletePost
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostDetails);

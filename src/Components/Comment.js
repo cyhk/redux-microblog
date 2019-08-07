@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { deleteComment } from '../actionCreators';
 
 /**
  * Comment: displays comment text with delete button
@@ -11,18 +13,22 @@ class Comment extends Component {
   }
 
   handleClick(evt){
-    //something redux dispatch delete comment this.props.id
-    console.log("delete this")
+    const { postId, index, deleteComment } = this.props;
+    deleteComment(postId, index);
   }
 
   render() {
     return (
       <div>
         <button onClick={this.handleClick}>X</button>
-        <p>{this.props.comment}</p>
+        <span>{this.props.comment}</span>
       </div>
     );
   }
 }
 
-export default Comment;
+const mapDispatchToProps = {
+  deleteComment
+}
+
+export default connect(null, mapDispatchToProps)(Comment);

@@ -1,0 +1,4 @@
+export const ADD_OR_EDIT_POST = "ADD_OR_EDIT_POST";
+export const DELETE_POST = "DELETE_POST";
+export const ADD_COMMENT = "ADD_COMMENT";
+export const DELETE_COMMENT = "DELETE_COMMENT";

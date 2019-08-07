@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 /**
  * TitleList: renders list of titles from redux state
@@ -10,13 +11,17 @@ class TitleList extends Component {
     let posts = this.props.posts
     return (
       <ul>
-        {posts.map(post =>
-          <li><Link href={`/posts/${post.id}`}>{post.title}</Link></li>
-        )}
+        {Object.keys(posts).map(
+          id => <li><Link to={`/posts/${id}`}>{posts[id].title}</Link></li>
+          )}
       </ul>
     );
 
   }
 }
 
-export default TitleList;
+function mapStateToProps(state){
+  return { posts: state.posts }
+}
+
+export default connect(mapStateToProps)(TitleList);

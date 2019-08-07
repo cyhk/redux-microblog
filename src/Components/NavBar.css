@@ -1,0 +1,43 @@
+.nav-bar {
+  background-color: salmon;
+  height: 10vh;
+  line-height: 10vh;
+  position: relative;
+  margin: 0;
+}
+
+.nav-bar-home {
+  position: absolute;
+  left: 5%;
+  font-size: 18pt;
+}
+
+.nav-bar-home:link {
+  text-decoration: none;
+}
+
+.nav-bar-home:visited {
+  color: white;
+}
+
+.nav-bar-new {
+  position: absolute;
+  right: 5%;
+  font-size: 14pt;
+}
+
+.nav-bar-new:link {
+  text-decoration: none;
+}
+
+.nav-bar-new:visited {
+  color: white;
+}
+
+.shop-cart-link:link {
+  text-decoration: none;
+}
+
+.shop-cart-link:visited {
+  text-decoration: none;
+}

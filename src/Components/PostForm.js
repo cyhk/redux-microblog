@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import { connect } from "react-redux";
+import { addOrEditPost } from "../actionCreators";
+import uuid from "uuid/v4";
+import "./PostForm.css";
 
 /**
  * PostForm: A generic form for adding and editing
@@ -17,6 +21,18 @@ class PostForm extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+    this.disableButton = this.disableButton.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.postId) {
+      const { title, description, body } = this.props.post;
+      this.setState({
+        title,
+        description,
+        body
+      })
+    }
   }
 
   handleChange(evt) {
@@ -27,7 +43,20 @@ class PostForm extends Component {
 
   handleSubmit(evt) {
     evt.preventDefault();
-    // probably connect to redux??
+    let id = this.props.postId;
+    if (id === undefined) {
+      id = uuid();
+    }
+
+    const { title, description, body } = this.state;
+    let postDetails = {
+      id,
+      title,
+      description,
+      body
+    };
+
+    this.props.addOrEditPost(postDetails);
     this.props.history.push("/");
   }
 
@@ -36,30 +65,39 @@ class PostForm extends Component {
     this.props.history.push("/");
   }
 
+  disableButton() {
+    const { title, description, body } = this.state;
+    return !title || !description || !body;
+  }
+
   render() {
     const { title, description, body } = this.state;
 
     return (
       <div>
-        <Form onSubmit={this.handleSubmit}>
-          <FormGroup>
-            <div><Label>Title</Label></div>
-            <Input name="title" id="post-form-title" value={title} onChange={this.handleChange}/>
+        <Form className="post-form" onSubmit={this.handleSubmit}>
+          <FormGroup className="post-form-group">
+            <div className="post-form-label"><Label>Title</Label></div>
+            <Input name="title" id="post-form-title" value={title} onChange={this.handleChange} />
           </FormGroup>
-          <FormGroup>
-            <div><Label>Description</Label></div>
-            <Input name="description" id="post-form-description" value={description} onChange={this.handleChange}/>
+          <FormGroup className="post-form-group">
+            <div className="post-form-label"><Label>Description</Label></div>
+            <Input name="description" id="post-form-description" value={description} onChange={this.handleChange} />
           </FormGroup>
-          <FormGroup>
-            <div><Label>Body</Label></div>
-            <Input type="textarea" name="body" id="post-form-body" value={body} onChange={this.handleChange}/>
+          <FormGroup className="post-form-group">
+            <div className="post-form-label"><Label >Body</Label></div>
+            <Input type="textarea" rows={15} name="body" id="post-form-body" value={body} onChange={this.handleChange} />
           </FormGroup>
-          <Button>Save</Button>
-          <Button onClick={this.handleCancel}>Cancel</Button>
+          <Button className="post-form-button" disabled={this.disableButton()}>Save</Button>
+          <Button className="post-form-button" onClick={this.handleCancel}>Cancel</Button>
         </Form>
       </div>
     )
   }
 }
 
-export default PostForm;
+const mapDispatchToProps = {
+  addOrEditPost
+}
+
+export default connect(null, mapDispatchToProps)(PostForm);
