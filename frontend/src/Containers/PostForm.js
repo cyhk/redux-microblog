@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { connect } from "react-redux";
-import { addOrEditPost } from "../actionCreators";
-import uuid from "uuid/v4";
+import { addPost, editPost } from "../actionCreators";
 import "./PostForm.css";
 
 /**
@@ -36,7 +35,7 @@ class PostForm extends Component {
       })
     }
   }
-
+  
   // update state
   handleChange(evt) {
     this.setState({
@@ -47,20 +46,18 @@ class PostForm extends Component {
   // add or update post in redux store
   handleSubmit(evt) {
     evt.preventDefault();
-    let id = this.props.postId;
-    if (id === undefined) {
-      id = uuid();
-    }
-
+    const { postId } = this.props;
     const { title, description, body } = this.state;
     let postDetails = {
-      id,
       title,
       description,
       body
     };
-    
-    this.props.addOrEditPost(postDetails);
+    if (postId) {
+      this.props.editPost(postId, postDetails);
+    } else {
+      this.props.addPost(postDetails);
+    }
     this.props.history.push("/");
   }
 
@@ -103,7 +100,8 @@ class PostForm extends Component {
 }
 
 const mapDispatchToProps = {
-  addOrEditPost
+  addPost,
+  editPost
 }
 
 export default connect(null, mapDispatchToProps)(PostForm);

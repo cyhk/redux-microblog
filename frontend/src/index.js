@@ -4,7 +4,10 @@ import './index.css';
 import App from './Components/App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from "react-redux";
-import { createStore, /*combineReducers*/ } from "redux";
+import { createStore, applyMiddleware, compose /*combineReducers*/ } from "redux";
+import thunk from 'redux-thunk';
+import uiReducer from './uiReducer';
+import titleReducer from './titleReducer';
 import postReducer from "./postReducer";
 import commentReducer from "./commentReducer";
 import reduceReducers from 'reduce-reducers';
@@ -12,16 +15,20 @@ import reduceReducers from 'reduce-reducers';
 import { BrowserRouter } from "react-router-dom";
 
 const INITIAL_STATE = {
-  posts: { byId: {}, allIds: [] },
-  comments: { byId: {}, allIds: [] }
+  posts: { },
+  titles: [],
+  err: ''
 };
 
 // const microblogReducer = combineReducers({ postReducer, commentReducer });
-const microblogReducer = reduceReducers(INITIAL_STATE, postReducer, commentReducer);
+const microblogReducer = reduceReducers(INITIAL_STATE, uiReducer, titleReducer, postReducer, commentReducer);
 
 const store = createStore(microblogReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__
-  && window.__REDUX_DEVTOOLS_EXTENSION__());
+  compose(
+    applyMiddleware(thunk),
+    window.__REDUX_DEVTOOLS_EXTENSION__
+    && window.__REDUX_DEVTOOLS_EXTENSION__()
+  ));
   
 ReactDOM.render(
   <Provider store={store}>

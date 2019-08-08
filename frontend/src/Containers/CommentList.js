@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Comment from "./Comment";
 import { connect } from "react-redux";
 import { addComment } from '../actionCreators';
-import uuid from "uuid/v4";
 
 /**
  * Comments: takes post id as prop, renders all comments for that post
@@ -22,8 +21,7 @@ class CommentList extends Component {
   // add to redux store
   handleSubmit(evt) {
     evt.preventDefault();
-    const commentId = uuid();
-    this.props.addComment(this.props.postId, commentId, this.state.comment);
+    this.props.addComment(this.props.postId, this.state.comment);
     this.setState({
       comment: ''
     })
@@ -37,13 +35,13 @@ class CommentList extends Component {
   }
 
   render() {
-    const { postComments, commentsById, postId } = this.props;
-    const commentsList = postComments.map(commentId =>
+    const { comments, postId } = this.props;
+    const commentsList = comments.map(comment =>
       <Comment
-        key={commentId}
-        commentId={commentId}
+        key={comment.id}
+        commentId={comment.id}
         postId={postId}
-        comment={commentsById[commentId]} />
+        comment={comment.text} />
     );
 
     return (
@@ -63,11 +61,9 @@ class CommentList extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  let id = ownProps.postId;
-  return {
-    commentsById: state.comments.byId,
-    postComments: state.posts.byId[id].comments
-  };
+  const postId = ownProps.postId;
+  const comments = state.posts[postId].comments;
+  return { comments }
 }
 
 const mapDispatchToProps = {

@@ -3,10 +3,10 @@ import {
 } from "./actionTypes.js";
 
 const INITIAL_STATE = {
-  posts: { byId: {}, allIds: [] },
-  comments: { byId: {}, allIds: [] }
+  posts: {},
+  titles: [],
+  err: false
 };
-
 /**
  * commentReducer: 
  * add, edit, or delete post;
@@ -16,55 +16,37 @@ const INITIAL_STATE = {
 function commentReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case ADD_COMMENT: {
-      const { id, commentId, comment } = action.payload;
-      let newPostComments = [...state.posts.byId[id].comments, commentId];
-      let newCommentsById = { ...state.comments.byId, [commentId]: comment };
-      let newCommentAllIds = [...state.comments.allIds, commentId];
-
+      const { postId, commentId, text } = action.payload;
       return {
         ...state,
         posts: {
           ...state.posts,
-          byId: {
-            ...state.posts.byId,
-            [id]: {
-              ...state.posts.byId[id],
-              comments: newPostComments
-            }
+          [postId]: {
+            ...state.posts[postId],
+            comments: [
+              ...state.posts[postId].comments,
+              {
+                id: commentId,
+                text
+              }
+            ]
           }
-        },
-        comments: {
-          ...state.comments,
-          byId: newCommentsById,
-          allIds: newCommentAllIds
         }
       }
     }
     case DELETE_COMMENT: {
-      const { id, commentId } = action.payload;
-
-      let newPostComments = state.posts.byId[id].comments.filter(cId => cId !== commentId);
-      let newCommentsById = { ...state.comments.byId };
-      delete(newCommentsById[commentId]);
-      let newCommentsAllIds = state.comments.allIds.filter(cId => cId !== commentId);
-
+      const { postId, commentId } = action;
       return {
         ...state,
         posts: {
           ...state.posts,
-          byId: {
-            ...state.posts.byId,
-            [id]: {
-              ...state.posts.byId[id],
-              comments: newPostComments
-            }
+          [postId]: {
+            ...state.posts[postId],
+            comments: state.posts[postId].comments.filter(
+              c => c.id !== commentId
+            )
           }
         },
-        comments: {
-          ...state.comments,
-          byId: newCommentsById,
-          allIds: newCommentsAllIds
-        }
       }
     }
     default:

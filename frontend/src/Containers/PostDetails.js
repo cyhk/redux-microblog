@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PostForm from "./PostForm";
 import { connect } from "react-redux";
 import CommentList from "./CommentList";
-import { deletePost } from "../actionCreators";
+import { getPost, deletePost } from "../actionCreators";
 import NotFound from "../Components/NotFound";
 
 /**
@@ -20,6 +20,13 @@ class PostDetails extends Component {
     this.showEditForm = this.showEditForm.bind(this);
   }
 
+  componentDidMount() {
+    let id = this.props.match.params.postid;
+    
+    if (!this.props.post) {
+      this.props.getPost(id);
+    }
+  }
 
   // delete from redux store
   handleDelete(evt) {
@@ -38,9 +45,8 @@ class PostDetails extends Component {
 
   // renders post when not in edit mode
   renderPost() {
-    let id = this.props.match.params.postid;
+    let postId = this.props.match.params.postid;
     let post = this.props.post;
-
     return (
       <div>
         <div>
@@ -52,7 +58,7 @@ class PostDetails extends Component {
         <p>{post.body}</p>
 
         <div>
-          <CommentList postId={id} />
+          <CommentList postId={postId} />
         </div>
       </div>
     );
@@ -62,15 +68,20 @@ class PostDetails extends Component {
   renderForm() {
     let id = this.props.match.params.postid;
     let post = this.props.post;
-    
-    return <PostForm history={this.props.history} post={post} postId={id}/>;
+
+    return <PostForm history={this.props.history} post={post} postId={id} />;
   }
 
   render() {
-    let post = this.props.post;
+    const { post, err } = this.props;
     if (!post) {
+      return <div>Loading...</div>
+    }
+
+    if (err) {
       return <NotFound />
     }
+
     return this.state.edit ? this.renderForm() : this.renderPost()
   }
 }
@@ -78,11 +89,13 @@ class PostDetails extends Component {
 function mapStateToProps(state, ownProps) {
   let id = ownProps.match.params.postid;
   return {
-    post: state.posts.byId[id]
+    post: state.posts[id],
+    err: state.err
   }
 }
 
 const mapDispatchToProps = {
+  getPost,
   deletePost
 }
 

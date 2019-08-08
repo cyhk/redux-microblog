@@ -19,6 +19,10 @@ class Comment extends Component {
   }
 
   render() {
+    if (!this.props.commentId) {
+      return <div>Loading...</div>
+    }
+
     return (
       <div>
         <button onClick={this.handleClick}>X</button>
