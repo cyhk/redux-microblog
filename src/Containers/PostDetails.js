@@ -3,7 +3,7 @@ import PostForm from "./PostForm";
 import { connect } from "react-redux";
 import CommentList from "./CommentList";
 import { deletePost } from "../actionCreators";
-import NotFound from "./NotFound";
+import NotFound from "../Components/NotFound";
 
 /**
  * PostDetails: renders post

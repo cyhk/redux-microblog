@@ -37,9 +37,8 @@ class CommentList extends Component {
   }
 
   render() {
-    const { commentsAllIds, commentsById, postId } = this.props;
-    console.log(this.props);
-    const commentsList = commentsAllIds.map(commentId =>
+    const { postComments, commentsById, postId } = this.props;
+    const commentsList = postComments.map(commentId =>
       <Comment
         key={commentId}
         commentId={commentId}
@@ -56,17 +55,18 @@ class CommentList extends Component {
             value={this.state.comment}
             placeholder="Post a comment."
             onChange={this.handleChange} />
-          <button>Comment</button>
+          <button disabled={!this.state.comment}>Comment</button>
         </form>
       </div>
     );
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  let id = ownProps.postId;
   return {
     commentsById: state.comments.byId,
-    commentsAllIds: state.comments.allIds
+    postComments: state.posts.byId[id].comments
   };
 }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TitleList from "./TitleList";
+import TitleList from "../Containers/TitleList";
 
 /**
  * Home: Landing page for microblog, displays post titles
