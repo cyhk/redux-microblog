@@ -21,9 +21,11 @@ class PostForm extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
-    this.disableButton = this.disableButton.bind(this);
+    this.disable = this.disable.bind(this);
   }
 
+  // update post with initial values
+  // in form if postId is found
   componentDidMount() {
     if (this.props.postId) {
       const { title, description, body } = this.props.post;
@@ -35,12 +37,14 @@ class PostForm extends Component {
     }
   }
 
+  // update state
   handleChange(evt) {
     this.setState({
       [evt.target.name]: evt.target.value
     })
   }
 
+  // add or update post in redux store
   handleSubmit(evt) {
     evt.preventDefault();
     let id = this.props.postId;
@@ -55,17 +59,19 @@ class PostForm extends Component {
       description,
       body
     };
-
+    
     this.props.addOrEditPost(postDetails);
     this.props.history.push("/");
   }
 
+  // redirect to home
   handleCancel(evt) {
     evt.preventDefault();
     this.props.history.push("/");
   }
 
-  disableButton() {
+  // bans submission when fields are not all filled
+  disable() {
     const { title, description, body } = this.state;
     return !title || !description || !body;
   }
@@ -86,9 +92,9 @@ class PostForm extends Component {
           </FormGroup>
           <FormGroup className="post-form-group">
             <div className="post-form-label"><Label >Body</Label></div>
-            <Input type="textarea" rows={15} name="body" id="post-form-body" value={body} onChange={this.handleChange} />
+              <Input type="textarea" rows={15} name="body" id="post-form-body" value={body} onChange={this.handleChange} />
           </FormGroup>
-          <Button className="post-form-button" disabled={this.disableButton()}>Save</Button>
+          <Button className="post-form-button" disabled={this.disable()}>Save</Button>
           <Button className="post-form-button" onClick={this.handleCancel}>Cancel</Button>
         </Form>
       </div>

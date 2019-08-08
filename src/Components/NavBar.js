@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavLink } from "react-router-dom";
-import { Nav, NavItem, Navbar } from "reactstrap";
+import { Nav } from "reactstrap";
 import "./NavBar.css";
 
 /**
@@ -9,16 +9,10 @@ import "./NavBar.css";
 class NavBar extends Component {
   render() {
     return (
-      // <Navbar expand="md">
-        <Nav className="nav-bar">
-          {/* <NavItem> */}
-            <NavLink className="nav-bar-home" exact to="/">MICROBLOG</NavLink>
-          {/* </NavItem> */}
-          {/* <NavItem> */}
-            <NavLink className="nav-bar-new" exact to="/new">ADD POST</NavLink>
-          {/* </NavItem> */}
-        </Nav>
-      // </Navbar>
+      <Nav className="nav-bar">
+        <NavLink className="nav-bar-home" exact to="/">MICROBLOG</NavLink>
+        <NavLink className="nav-bar-new" exact to="/posts/new">NEW POST</NavLink>
+      </Nav>
     )
   }
 }

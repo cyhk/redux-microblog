@@ -7,21 +7,29 @@ import { connect } from "react-redux";
  */
 class TitleList extends Component {
   render() {
-    //grab posts from redux
-    let posts = this.props.posts
+    const { postsById, postsAllIds } = this.props;
     return (
       <ul>
-        {Object.keys(posts).map(
-          id => <li><Link to={`/posts/${id}`}>{posts[id].title}</Link></li>
-          )}
+        {postsAllIds.map(
+          postId =>
+            <li key={postId}>
+              <Link to={`/posts/${postId}`}>
+                {postsById[postId].title}
+              </Link>
+            </li>
+          )
+        }
       </ul>
     );
 
   }
 }
 
-function mapStateToProps(state){
-  return { posts: state.posts }
+function mapStateToProps(state) {
+  return {
+    postsById: state.posts.byId,
+    postsAllIds: state.posts.allIds
+  }
 }
 
 export default connect(mapStateToProps)(TitleList);

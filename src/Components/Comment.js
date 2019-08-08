@@ -12,9 +12,10 @@ class Comment extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  // delete from redux store
   handleClick(evt){
-    const { postId, index, deleteComment } = this.props;
-    deleteComment(postId, index);
+    const { postId, commentId, deleteComment } = this.props;
+    deleteComment(postId, commentId);
   }
 
   render() {

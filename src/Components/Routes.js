@@ -14,7 +14,7 @@ class Routes extends Component {
     return (
       <Switch>
         <Route exact path="/" render={() => <Home />} />
-        <Route exact path="/new" render={(rtProps) => <PostForm {...rtProps}/>} />
+        <Route exact path="/posts/new" render={(rtProps) => <PostForm {...rtProps}/>} />
         <Route exact path="/posts/:postid" render={(rtProps) => <PostDetails {...rtProps} />} />
         <Route render={() => <NotFound />} />
       </Switch>

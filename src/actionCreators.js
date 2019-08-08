@@ -11,15 +11,15 @@ export function addOrEditPost(postDetails) {
 
 // return action with type DELETE_POST
 export function deletePost(id) {
-  return { type: DELETE_POST, payload: { id }}
+  return { type: DELETE_POST, payload: { id }};
 }
 
 // return action with type ADD_COMMENT
-export function addComment(id, comment) {
-  return { type: ADD_COMMENT, payload: { id, comment }};
+export function addComment(id, commentId, comment) {
+  return { type: ADD_COMMENT, payload: { id, commentId, comment }};
 }
 
 // return action with type DELETE_COMMENT
-export function deleteComment(id, index) {
-  return { type: DELETE_COMMENT, payload: { id, index }}
+export function deleteComment(id, commentId) {
+  return { type: DELETE_COMMENT, payload: { id, commentId }};
 }

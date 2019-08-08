@@ -3,6 +3,7 @@ import PostForm from "./PostForm";
 import { connect } from "react-redux";
 import CommentList from "./CommentList";
 import { deletePost } from "../actionCreators";
+import NotFound from "./NotFound";
 
 /**
  * PostDetails: renders post
@@ -20,25 +21,25 @@ class PostDetails extends Component {
   }
 
 
+  // delete from redux store
   handleDelete(evt) {
-    // remove post from redux state
-    //call actioncreator to delete
-    //connected from redux
     let id = this.props.match.params.postid;
     this.props.deletePost(id);
     this.props.history.push("/");
   }
 
+  // set edit flag to true to render
+  // form component
   showEditForm() {
     this.setState({
       edit: true
     });
   }
 
+  // renders post when not in edit mode
   renderPost() {
-    //connected from redux
     let id = this.props.match.params.postid;
-    let post = this.props.posts[id];
+    let post = this.props.post;
 
     return (
       <div>
@@ -57,24 +58,27 @@ class PostDetails extends Component {
     );
   }
 
+  // renders edit form when in edit mode
   renderForm() {
-    //also get from redux
     let id = this.props.match.params.postid;
-    let post = this.props.posts[id];
+    let post = this.props.post;
+    
     return <PostForm history={this.props.history} post={post} postId={id}/>;
   }
 
   render() {
-    if (this.state.edit) {
-      return this.renderForm();
+    let post = this.props.post;
+    if (!post) {
+      return <NotFound />
     }
-    return this.renderPost();
+    return this.state.edit ? this.renderForm() : this.renderPost()
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
+  let id = ownProps.match.params.postid;
   return {
-    posts: state.posts
+    post: state.posts.byId[id]
   }
 }
 

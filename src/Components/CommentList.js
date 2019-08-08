@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Comment from "./Comment";
 import { connect } from "react-redux";
 import { addComment } from '../actionCreators';
+import uuid from "uuid/v4";
 
 /**
  * Comments: takes post id as prop, renders all comments for that post
@@ -18,39 +19,44 @@ class CommentList extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  // add to redux store
   handleSubmit(evt) {
     evt.preventDefault();
-
-    this.props.addComment(this.props.postId, this.state.comment);
+    const commentId = uuid();
+    this.props.addComment(this.props.postId, commentId, this.state.comment);
     this.setState({
       comment: ''
     })
   }
 
+  // change local state
   handleChange(evt) {
     this.setState({
       [evt.target.name]: evt.target.value
     })
   }
 
-
-
   render() {
-    const { comments, postId } = this.props;
-    console.log(comments);
-    console.log()
+    const { commentsAllIds, commentsById, postId } = this.props;
+    console.log(this.props);
+    const commentsList = commentsAllIds.map(commentId =>
+      <Comment
+        key={commentId}
+        commentId={commentId}
+        postId={postId}
+        comment={commentsById[commentId]} />
+    );
+
     return (
       <div className="comment-list">
-        {comments[postId].map((comment, index) =>
-          <Comment postId={postId} index={index} comment={comment} />
-        )}
+        {commentsList}
         <form onSubmit={this.handleSubmit}>
           <input
             name="comment"
             value={this.state.comment}
             placeholder="Post a comment."
             onChange={this.handleChange} />
-            <button>Comment</button>
+          <button>Comment</button>
         </form>
       </div>
     );
@@ -58,7 +64,10 @@ class CommentList extends Component {
 }
 
 function mapStateToProps(state) {
-  return { comments: state.comments };
+  return {
+    commentsById: state.comments.byId,
+    commentsAllIds: state.comments.allIds
+  };
 }
 
 const mapDispatchToProps = {

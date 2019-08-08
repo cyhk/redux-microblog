@@ -32,11 +32,21 @@
 .post-form-group {
   margin: 10px;
 }
- .post-form-button {
+
+.post-form-button {
    border: none;
    background-color: lightsalmon;
    color: white;
    font-size: 12pt;
    margin: 5px;
    padding: 0.5em;
- }
+}
+
+.post-form-button:disabled {
+  border: none;
+  background-color: darksalmon;
+  color: white;
+  font-size: 12pt;
+  margin: 5px;
+  padding: 0.5em;
+}

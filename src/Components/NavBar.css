@@ -8,12 +8,14 @@
 
 .nav-bar-home {
   position: absolute;
+  font-weight: bold;
   left: 5%;
   font-size: 18pt;
 }
 
 .nav-bar-home:link {
   text-decoration: none;
+  color: white;
 }
 
 .nav-bar-home:visited {
@@ -28,6 +30,7 @@
 
 .nav-bar-new:link {
   text-decoration: none;
+  color: white;
 }
 
 .nav-bar-new:visited {
