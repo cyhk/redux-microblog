@@ -10,6 +10,7 @@ import uiReducer from './uiReducer';
 import titleReducer from './titleReducer';
 import postReducer from "./postReducer";
 import commentReducer from "./commentReducer";
+import voteReducer from "./voteReducer";
 import reduceReducers from 'reduce-reducers';
 // import microblogReducer from "./microblogReducer";
 import { BrowserRouter } from "react-router-dom";
@@ -22,7 +23,7 @@ const INITIAL_STATE = {
 };
 
 // const microblogReducer = combineReducers({ postReducer, commentReducer });
-const microblogReducer = reduceReducers(INITIAL_STATE, uiReducer, titleReducer, postReducer, commentReducer);
+const microblogReducer = reduceReducers(INITIAL_STATE, uiReducer, titleReducer, postReducer, commentReducer, voteReducer);
 
 const store = createStore(microblogReducer,
   compose(

@@ -3,3 +3,35 @@
   text-align: center;
   margin: 0 20%;
 }
+
+.post-detail-button {
+  border: salmon;
+  background-color: salmon;
+  color: white;
+  font-size: 11pt;
+  margin: 0 5px;
+}
+
+.post-detail-vote-button-container {
+  position: absolute;
+  left: 5%;
+}
+
+.vote-button {
+  /* border: salmon; */
+  border: none;
+  /* background-color: salmon; */
+  background-color: transparent;
+  /* color: white; */
+  color: salmon;
+  font-size: 11pt;
+  margin: 0 5px;
+}
+
+.vote-count {
+  margin: 5px 0;
+}
+
+.post-detail-title {
+  margin-bottom: 0;
+}

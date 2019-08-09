@@ -1,6 +1,7 @@
 import {
   LOAD_POST, ADD_POST,
   EDIT_POST, DELETE_POST,
+  // CHANGE_VOTE_ON_POST
 } from "./actionTypes.js";
 
 const INITIAL_STATE = {
@@ -83,6 +84,24 @@ function postReducer(state = INITIAL_STATE, action) {
         loading: false
       }
     }
+    // case CHANGE_VOTE_ON_POST: {
+    //   const { id, votes } = action;
+    //   return {
+    //     ...state,
+    //     titles: state.titles.map(
+    //       t => {
+    //         return t.id === +id ? { ...t, votes} : t
+    //       }
+    //     ),
+    //     posts: {
+    //       ...state.posts,
+    //       [id]: {
+    //         ...state.posts[id],
+    //         votes
+    //       }
+    //     }
+    //   }
+    // }
     default:
       return state;
   }

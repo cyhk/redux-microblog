@@ -10,3 +10,10 @@ export const DELETE_POST = "DELETE_POST";
 
 export const ADD_COMMENT = "ADD_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
+
+// export const CHANGE_VOTE_ON_POST = "CHANGE_VOTE_ON_POST";
+// export const CHANGE_VOTE_ON_TITLE = "CHANGE_VOTE_ON_TITLE";
+
+
+export const CHANGE_VOTE = "CHANGE_VOTE";
+

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PostForm from "./PostForm";
 import { connect } from "react-redux";
 import CommentList from "./CommentList";
-import { getPost, deletePost } from "../actionCreators";
+import { getPost, deletePost, makeVote } from "../actionCreators";
 import NotFound from "../Components/NotFound";
 import "./PostDetails.css";
 
@@ -19,21 +19,33 @@ class PostDetails extends Component {
 
     this.handleDelete = this.handleDelete.bind(this);
     this.showEditForm = this.showEditForm.bind(this);
+    this.handleUpvote = this.handleUpvote.bind(this);
+    this.handleDownvote = this.handleDownvote.bind(this);
   }
 
   componentDidMount() {
     let id = this.props.match.params.postid;
-    
+
     if (!this.props.post) {
       this.props.getPost(id);
     }
   }
-  
+
   // delete from redux store
   handleDelete(evt) {
     let id = this.props.match.params.postid;
     this.props.deletePost(id);
     this.props.history.push("/");
+  }
+
+  handleUpvote(evt) {
+    const id = evt.target.name;
+    this.props.makeVote(id, "up");
+  }
+
+  handleDownvote(evt) {
+    const id = evt.target.name;
+    this.props.makeVote(id, "down");
   }
 
   // set edit flag to true to render
@@ -51,13 +63,21 @@ class PostDetails extends Component {
     return (
       <div>
         <div>
-          <h3>{post.title}</h3>
-          <p>{post.description}</p>
-          <button onClick={this.showEditForm}>Edit</button>
-          <button onClick={this.handleDelete}>Delete</button>
+          <div className="post-detail-vote-button-container">
+            <button className="vote-button" name={postId} onClick={this.handleUpvote}>▲</button>
+            <p className="vote-count">{post.votes}</p>
+            <button className="vote-button" name={postId} onClick={this.handleDownvote}>▼</button>
+          </div>
+          <div>
+            <h3 className="post-detail-title">{post.title}</h3>
+            <i>{post.description}</i>
+          </div>
         </div>
         <p>{post.body}</p>
-
+        <div className="post-detail-button-container">
+          <button className="post-detail-button" onClick={this.showEditForm}>Edit</button>
+          <button className="post-detail-button" onClick={this.handleDelete}>Delete</button>
+        </div>
         <div className="post-comments">
           <CommentList postId={postId} />
         </div>
@@ -97,7 +117,8 @@ function mapStateToProps(state, ownProps) {
 
 const mapDispatchToProps = {
   getPost,
-  deletePost
+  deletePost,
+  makeVote
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostDetails);

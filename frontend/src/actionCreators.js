@@ -2,7 +2,10 @@ import {
   ADD_POST, EDIT_POST, DELETE_POST,
   ADD_COMMENT, DELETE_COMMENT,
   LOAD_TITLES, LOAD_POST,
-  SHOW_SPINNER, SHOW_ERR
+  SHOW_SPINNER, SHOW_ERR,
+  CHANGE_VOTE
+  // CHANGE_VOTE_ON_POST,
+  // CHANGE_VOTE_ON_TITLE
 } from "./actionTypes.js";
 
 import { BASE_URL } from "./config";
@@ -42,13 +45,27 @@ function makeComment(postId, commentDetails) {
   return { type: ADD_COMMENT, payload: { commentId: id, text, postId } };
 }
 
+function removeComment(postId, commentId) {
+  return { type: DELETE_COMMENT, postId, commentId };
+}
+
+// function castVotePost(id, votes) {
+//   return { type: CHANGE_VOTE_ON_POST, id, votes };
+// }
+
+// function castVoteTitle(id, votes) {
+//   return { type: CHANGE_VOTE_ON_TITLE, id, votes };
+// }
+
+function castVote(id, votes) {
+  return { type: CHANGE_VOTE, id, votes };
+}
+
 export function getTitles() {
   return async function (dispatch) {
     dispatch(showSpinner());
     try {
-      console.log("getting titles from api");
       let res = await axios.get(`${BASE_URL}posts`);
-      console.log("updating redux store");
       dispatch(gotTitles(res.data));
     } catch (err) {
       dispatch(showErr(err.message));
@@ -135,6 +152,18 @@ export function deleteComment(postId, commentId) {
   }
 }
 
-function removeComment(postId, commentId) {
-  return { type: DELETE_COMMENT, postId, commentId };
+export function makeVote(id, vote) {
+  return async function (dispatch) {
+    try {
+      let res = await axios.post(`${BASE_URL}posts/${id}/vote/${vote}`);
+      dispatch(castVote(id, res.data.votes));
+      // if (type === "post") {
+      //   dispatch(castVotePost(id, res.data.votes));
+      // } else {
+      //   dispatch(castVoteTitle(id, res.data.votes));
+      // }
+    } catch (err) {
+      dispatch(showErr(err.message));
+    }
+  }
 }
