@@ -1,0 +1,24 @@
+.title-list {
+  list-style-type: none;
+  text-align: left;
+}
+
+.title-list-link {
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+.title-list-link:link {
+  text-decoration: none;
+  color: salmon;
+}
+
+.title-list-link:visited {
+  text-decoration: none;
+  color: darksalmon;
+}
+
+.title-list-description {
+  font-size: 10pt;
+  margin-top: 0px;
+}

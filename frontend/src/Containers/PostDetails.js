@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import CommentList from "./CommentList";
 import { getPost, deletePost } from "../actionCreators";
 import NotFound from "../Components/NotFound";
+import "./PostDetails.css";
 
 /**
  * PostDetails: renders post
@@ -27,7 +28,7 @@ class PostDetails extends Component {
       this.props.getPost(id);
     }
   }
-
+  
   // delete from redux store
   handleDelete(evt) {
     let id = this.props.match.params.postid;
@@ -57,7 +58,7 @@ class PostDetails extends Component {
         </div>
         <p>{post.body}</p>
 
-        <div>
+        <div className="post-comments">
           <CommentList postId={postId} />
         </div>
       </div>

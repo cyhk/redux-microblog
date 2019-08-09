@@ -1,8 +1,11 @@
-import { SHOW_ERR } from "./actionTypes.js";
+import { 
+  SHOW_SPINNER,
+  SHOW_ERR } from "./actionTypes.js";
 
 const INITIAL_STATE = {
   posts: { },
   titles: [],
+  loading: true,
   err: ''
 };
 
@@ -13,6 +16,12 @@ const INITIAL_STATE = {
 
 function uiReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
+    case SHOW_SPINNER: {
+      return {
+        ...state,
+        loading: true
+      }
+    }
     case SHOW_ERR: {
       return {
         ...state,

@@ -8,6 +8,7 @@ import {
 const INITIAL_STATE = {
   posts: {},
   titles: [],
+  loading: true,
   err: false
 };
 
@@ -19,9 +20,19 @@ const INITIAL_STATE = {
 function titleReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case LOAD_TITLES: {
+      console.log("running load titles");
       return {
         ...state,
-        titles: action.titles
+        titles: action.titles,
+        loading: false
+      }
+    }
+    case ADD_POST: {
+      const { id, title, description } = action.postDetails;
+      return {
+        ...state,
+        titles: [...state.titles, { id, title, description }],
+        loading: false
       }
     }
     case EDIT_POST: {
@@ -33,14 +44,8 @@ function titleReducer(state = INITIAL_STATE, action) {
             t.id !== id ?
               t :
               { id, title, description }
-          )
-      }
-    }
-    case ADD_POST: {
-      const { id, title, description } = action.postDetails;
-      return {
-        ...state,
-        titles: [...state.titles, { id, title, description }]
+          ),
+        loading: false
       }
     }
     case DELETE_POST: {
@@ -48,7 +53,8 @@ function titleReducer(state = INITIAL_STATE, action) {
         ...state,
         titles: state.titles.filter(
           t => t.id !== +action.id
-        )
+        ),
+        loading: false
       }
     }
     default:

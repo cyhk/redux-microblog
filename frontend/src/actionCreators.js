@@ -2,12 +2,16 @@ import {
   ADD_POST, EDIT_POST, DELETE_POST,
   ADD_COMMENT, DELETE_COMMENT,
   LOAD_TITLES, LOAD_POST,
-  SHOW_ERR
+  SHOW_SPINNER, SHOW_ERR
 } from "./actionTypes.js";
 
 import { BASE_URL } from "./config";
 
 import axios from "axios";
+
+export function showSpinner() {
+  return { type: SHOW_SPINNER }
+}
 
 function showErr(msg) {
   return { type: SHOW_ERR, msg };
@@ -40,9 +44,11 @@ function makeComment(postId, commentDetails) {
 
 export function getTitles() {
   return async function (dispatch) {
+    dispatch(showSpinner());
     try {
+      console.log("getting titles from api");
       let res = await axios.get(`${BASE_URL}posts`);
-
+      console.log("updating redux store");
       dispatch(gotTitles(res.data));
     } catch (err) {
       dispatch(showErr(err.message));
@@ -51,6 +57,8 @@ export function getTitles() {
 }
 export function getPost(id) {
   return async function (dispatch) {
+    dispatch(showSpinner());
+    
     try {
       let res = await axios.get(`${BASE_URL}posts/${id}`);
 
@@ -64,6 +72,8 @@ export function getPost(id) {
 // return action with type ADD_OR_EDIT_POST
 export function addPost(postDetails) {
   return async function (dispatch) {
+    dispatch(showSpinner());
+    
     try {
       let res = await axios.post(`${BASE_URL}posts/`, postDetails);
 
@@ -76,6 +86,8 @@ export function addPost(postDetails) {
 
 export function editPost(id, postDetails) {
   return async function (dispatch) {
+    dispatch(showSpinner());
+    
     try {
       let res = await axios.put(`${BASE_URL}posts/${id}`, postDetails);
       dispatch(updatePost(res.data));
@@ -88,6 +100,8 @@ export function editPost(id, postDetails) {
 // return action with type DELETE_POST
 export function deletePost(id) {
   return async function (dispatch) {
+    dispatch(showSpinner());
+    
     try {
       await axios.delete(`${BASE_URL}posts/${id}`);
       dispatch(removePost(id));

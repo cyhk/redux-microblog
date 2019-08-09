@@ -1,3 +1,4 @@
+export const SHOW_SPINNER = "SHOW_SPINNER";
 export const SHOW_ERR = "SHOW_ERR";
 
 export const LOAD_TITLES = "LOAD_TITLES";

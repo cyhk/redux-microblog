@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { connect } from "react-redux";
-import { addPost, editPost } from "../actionCreators";
+import { addPost, editPost, showSpinner } from "../actionCreators";
 import "./PostForm.css";
 
 /**
@@ -53,6 +53,7 @@ class PostForm extends Component {
       description,
       body
     };
+
     if (postId) {
       this.props.editPost(postId, postDetails);
     } else {
@@ -101,7 +102,8 @@ class PostForm extends Component {
 
 const mapDispatchToProps = {
   addPost,
-  editPost
+  editPost,
+  showSpinner
 }
 
 export default connect(null, mapDispatchToProps)(PostForm);

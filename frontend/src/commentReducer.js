@@ -5,6 +5,7 @@ import {
 const INITIAL_STATE = {
   posts: {},
   titles: [],
+  loading: true,
   err: false
 };
 /**

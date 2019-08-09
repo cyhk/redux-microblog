@@ -6,6 +6,7 @@ import {
 const INITIAL_STATE = {
   posts: { },
   titles: [],
+  loading: true,
   err: false
 };
 
@@ -21,7 +22,7 @@ function postReducer(state = INITIAL_STATE, action) {
       const { id, title, description, body, votes, comments } = action.post;
       return {
         ...state,
-        posts : {
+        posts: {
           ...state.posts,
           [id]: {
             title,
@@ -30,7 +31,8 @@ function postReducer(state = INITIAL_STATE, action) {
             votes,
             comments
           }
-        }
+        },
+        loading: false
       }
     }
     case ADD_POST: {
@@ -49,7 +51,8 @@ function postReducer(state = INITIAL_STATE, action) {
         posts: {
           ...state.posts,
           [id]: post
-        }
+        },
+        loading: false
       }
     }
     case EDIT_POST: {
@@ -66,7 +69,8 @@ function postReducer(state = INITIAL_STATE, action) {
             body,
             votes
           },
-        }
+        },
+        loading: false
       }
     }
     case DELETE_POST: {
@@ -75,7 +79,8 @@ function postReducer(state = INITIAL_STATE, action) {
 
       return {
         ...state,
-        posts: newPosts
+        posts: newPosts,
+        loading: false
       }
     }
     default:

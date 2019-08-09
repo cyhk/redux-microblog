@@ -1,34 +1,38 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getTitles } from "../actionCreators";
+import { getTitles, showSpinner } from "../actionCreators";
+import "./TitleList.css";
 
 /**
  * TitleList: renders list of titles from redux state
  */
 class TitleList extends Component {
   componentDidMount() {
-    this.props.getTitles();
+    if (this.props.titles.length === 0) {
+      this.props.getTitles();
+    }
   }
+
   render() {
-    const { titles, err } = this.props;
-    if (!titles){
+    const { titles, loading, err } = this.props;
+    if (loading) {
       return <div>Loading...</div>
     }
-    if (err){
+    if (err) {
       return <div>{err}</div>
     }
     return (
-      <ul>
+      <ul className="title-list">
         {titles.map(
           title =>
-            <li key={title.id}>
-              <Link to={`/posts/${title.id}`}>
+            <li key={title.id} className="title-list-post">
+              <Link className="title-list-link" to={`/posts/${title.id}`}>
                 {title.title}
               </Link>
-              <p>{title.description}</p>
+              <p className="title-list-description">{title.description}</p>
             </li>
-          )
+        )
         }
       </ul>
     );
@@ -36,10 +40,12 @@ class TitleList extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log("mapping state");
   return {
     titles: state.titles,
+    loading: state.loading,
     err: state.err
   }
 }
 
-export default connect(mapStateToProps, { getTitles })(TitleList);
+export default connect(mapStateToProps, { getTitles, showSpinner })(TitleList);

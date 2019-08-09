@@ -17,6 +17,7 @@ import { BrowserRouter } from "react-router-dom";
 const INITIAL_STATE = {
   posts: { },
   titles: [],
+  loading: true,
   err: ''
 };
 

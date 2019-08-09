@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Comment from "./Comment";
 import { connect } from "react-redux";
 import { addComment } from '../actionCreators';
+import "./CommentList.css";
 
 /**
  * Comments: takes post id as prop, renders all comments for that post
@@ -46,14 +47,17 @@ class CommentList extends Component {
 
     return (
       <div className="comment-list">
+        <h3>Comments</h3>
         {commentsList}
+        <br/>
         <form onSubmit={this.handleSubmit}>
           <input
+            className="comment-submit-box"
             name="comment"
             value={this.state.comment}
             placeholder="Post a comment."
             onChange={this.handleChange} />
-          <button disabled={!this.state.comment}>Comment</button>
+          <button className="comment-submit-button" disabled={!this.state.comment}>Comment</button>
         </form>
       </div>
     );

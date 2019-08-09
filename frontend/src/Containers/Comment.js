@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { deleteComment } from '../actionCreators';
+import "./Comment.css";
 
 /**
  * Comment: displays comment text with delete button
@@ -25,7 +26,7 @@ class Comment extends Component {
 
     return (
       <div>
-        <button onClick={this.handleClick}>X</button>
+        <button className="comment-delete-button" onClick={this.handleClick}>X</button>
         <span>{this.props.comment}</span>
       </div>
     );
