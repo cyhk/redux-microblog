@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Routes from "./Routes";
-import NavBar from "../Components/NavBar";
+import NavBar from "./NavBar";
 
 /**
  * App renders the Shop app

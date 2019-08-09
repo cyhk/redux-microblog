@@ -1,6 +1,8 @@
 import { 
   SHOW_SPINNER,
-  SHOW_ERR } from "./actionTypes.js";
+  SHOW_ERR,
+  CLEAR_ERR
+} from "../actionTypes.js";
 
 const INITIAL_STATE = {
   posts: { },
@@ -26,6 +28,12 @@ function uiReducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         err: action.msg
+      }
+    }
+    case CLEAR_ERR: {
+      return {
+        ...state,
+        err: ''
       }
     }
     default:

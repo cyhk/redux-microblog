@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Comment from "./Comment";
 import { connect } from "react-redux";
-import { addComment } from '../actionCreators';
+import { addCommentFromAPI } from '../actionCreators';
 import "./CommentList.css";
 
 /**
@@ -22,7 +22,7 @@ class CommentList extends Component {
   // add to redux store
   handleSubmit(evt) {
     evt.preventDefault();
-    this.props.addComment(this.props.postId, this.state.comment);
+    this.props.addCommentFromAPI(this.props.postId, this.state.comment);
     this.setState({
       comment: ''
     })
@@ -71,7 +71,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-  addComment
+  addCommentFromAPI
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CommentList);

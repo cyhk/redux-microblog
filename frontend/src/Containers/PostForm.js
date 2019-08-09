@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { connect } from "react-redux";
-import { addPost, editPost, showSpinner } from "../actionCreators";
+import { addPostFromAPI, editPostFromAPI } from "../actionCreators";
 import "./PostForm.css";
 
 /**
@@ -55,9 +55,9 @@ class PostForm extends Component {
     };
 
     if (postId) {
-      this.props.editPost(postId, postDetails);
+      this.props.editPostFromAPI(postId, postDetails);
     } else {
-      this.props.addPost(postDetails);
+      this.props.addPostFromAPI(postDetails);
     }
     this.props.history.push("/");
   }
@@ -101,9 +101,8 @@ class PostForm extends Component {
 }
 
 const mapDispatchToProps = {
-  addPost,
-  editPost,
-  showSpinner
+  addPostFromAPI,
+  editPostFromAPI
 }
 
 export default connect(null, mapDispatchToProps)(PostForm);

@@ -1,5 +1,6 @@
 export const SHOW_SPINNER = "SHOW_SPINNER";
 export const SHOW_ERR = "SHOW_ERR";
+export const CLEAR_ERR = "CLEAR_ERR";
 
 export const LOAD_TITLES = "LOAD_TITLES";
 
@@ -10,10 +11,6 @@ export const DELETE_POST = "DELETE_POST";
 
 export const ADD_COMMENT = "ADD_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
-
-// export const CHANGE_VOTE_ON_POST = "CHANGE_VOTE_ON_POST";
-// export const CHANGE_VOTE_ON_TITLE = "CHANGE_VOTE_ON_TITLE";
-
 
 export const CHANGE_VOTE = "CHANGE_VOTE";
 

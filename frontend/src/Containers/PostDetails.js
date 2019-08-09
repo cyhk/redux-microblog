@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PostForm from "./PostForm";
 import { connect } from "react-redux";
 import CommentList from "./CommentList";
-import { getPost, deletePost, makeVote } from "../actionCreators";
-import NotFound from "../Components/NotFound";
+import { getPostFromAPI, deletePostFromAPI, makeVoteFromAPI, clearErr } from "../actionCreators";
+import NotFound from "../components/NotFound";
 import "./PostDetails.css";
 
 /**
@@ -27,25 +27,29 @@ class PostDetails extends Component {
     let id = this.props.match.params.postid;
 
     if (!this.props.post) {
-      this.props.getPost(id);
+      this.props.getPostFromAPI(id);
     }
   }
 
+  componentWillUnmount() {
+    this.props.clearErr();
+  }
+
   // delete from redux store
-  handleDelete(evt) {
+  handleDelete() {
     let id = this.props.match.params.postid;
-    this.props.deletePost(id);
+    this.props.deletePostFromAPI(id);
     this.props.history.push("/");
   }
 
   handleUpvote(evt) {
     const id = evt.target.name;
-    this.props.makeVote(id, "up");
+    this.props.makeVoteFromAPI(id, "up");
   }
 
   handleDownvote(evt) {
     const id = evt.target.name;
-    this.props.makeVote(id, "down");
+    this.props.makeVoteFromAPI(id, "down");
   }
 
   // set edit flag to true to render
@@ -95,12 +99,12 @@ class PostDetails extends Component {
 
   render() {
     const { post, err } = this.props;
-    if (!post) {
-      return <div>Loading...</div>
-    }
-
     if (err) {
       return <NotFound />
+    }
+
+    if (!post) {
+      return <div>Loading...</div>
     }
 
     return this.state.edit ? this.renderForm() : this.renderPost()
@@ -116,9 +120,10 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-  getPost,
-  deletePost,
-  makeVote
+  getPostFromAPI,
+  deletePostFromAPI,
+  makeVoteFromAPI,
+  clearErr
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostDetails);

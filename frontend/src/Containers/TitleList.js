@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getTitles, showSpinner, makeVote } from "../actionCreators";
+import { getTitlesFromAPI, makeVoteFromAPI, clearErr } from "../actionCreators";
 import "./TitleList.css";
 
 /**
@@ -17,18 +17,22 @@ class TitleList extends Component {
 
   componentDidMount() {
     if (this.props.titles.length === 0) {
-      this.props.getTitles();
+      this.props.getTitlesFromAPI();
     }
+  }
+
+  componentWillUnmount() {
+    this.props.clearErr();
   }
 
   handleUpvote(evt) {
     const id = evt.target.name;
-    this.props.makeVote(id, "up", "title");
+    this.props.makeVoteFromAPI(id, "up");
   }
 
   handleDownvote(evt) {
     const id = evt.target.name;
-    this.props.makeVote(id, "down", "title");
+    this.props.makeVoteFromAPI(id, "down");
   }
 
   render() {
@@ -42,7 +46,6 @@ class TitleList extends Component {
     let titlesCopy = [...titles]
     titlesCopy.sort((title1, title2) => title2.votes - title1.votes);
 
-    console.log(titlesCopy)
     return (
       <ul className="title-list">
         {titlesCopy.map(
@@ -67,12 +70,12 @@ class TitleList extends Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({titles, loading, err}) {
   return {
-    titles: state.titles,
-    loading: state.loading,
-    err: state.err
+    titles,
+    loading,
+    err
   }
 }
 
-export default connect(mapStateToProps, { getTitles, showSpinner, makeVote })(TitleList);
+export default connect(mapStateToProps, { getTitlesFromAPI, makeVoteFromAPI, clearErr })(TitleList);

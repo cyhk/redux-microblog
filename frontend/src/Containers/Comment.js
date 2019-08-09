@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { deleteComment } from '../actionCreators';
+import { deleteCommentFromAPI } from '../actionCreators';
 import "./Comment.css";
 
 /**
@@ -12,11 +12,11 @@ class Comment extends Component {
 
     this.handleClick = this.handleClick.bind(this);
   }
-
+  
   // delete from redux store
-  handleClick(evt){
-    const { postId, commentId, deleteComment } = this.props;
-    deleteComment(postId, commentId);
+  handleClick(){
+    const { postId, commentId, deleteCommentFromAPI } = this.props;
+    deleteCommentFromAPI(postId, commentId);
   }
 
   render() {
@@ -34,7 +34,7 @@ class Comment extends Component {
 }
 
 const mapDispatchToProps = {
-  deleteComment
+  deleteCommentFromAPI
 }
 
 export default connect(null, mapDispatchToProps)(Comment);
