@@ -50,3 +50,7 @@
   margin: 5px;
   padding: 0.5em;
 }
+
+.post-form-error-msg {
+  color: rgb(240, 79, 61);
+}

@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getTitlesFromAPI, makeVoteFromAPI, clearErr } from "../actionCreators";
+import { getTitlesFromAPI, clearErr } from "../actionCreators";
 import "./TitleList.css";
+import Title from "../components/Title";
 
 /**
  * TitleList: renders list of titles from redux state
  */
 class TitleList extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleUpvote = this.handleUpvote.bind(this);
-    this.handleDownvote = this.handleDownvote.bind(this);
-  }
-
   componentDidMount() {
     if (this.props.titles.length === 0) {
       this.props.getTitlesFromAPI();
@@ -23,16 +16,6 @@ class TitleList extends Component {
 
   componentWillUnmount() {
     this.props.clearErr();
-  }
-
-  handleUpvote(evt) {
-    const id = evt.target.name;
-    this.props.makeVoteFromAPI(id, "up");
-  }
-
-  handleDownvote(evt) {
-    const id = evt.target.name;
-    this.props.makeVoteFromAPI(id, "down");
   }
 
   render() {
@@ -50,19 +33,7 @@ class TitleList extends Component {
       <ul className="title-list">
         {titlesCopy.map(
           title =>
-            <li key={title.id} className="title-list-post">
-              <div className="title-vote-container">
-                <button className="title-vote-button vote-button" name={title.id} onClick={this.handleUpvote}>▲</button>
-                <p className="vote-count">{title.votes}</p>
-                <button className="title-vote-button vote-button" name={title.id} onClick={this.handleDownvote}>▼</button>
-              </div>
-              <div className="title-list-text-container">
-                <Link className="title-list-link" to={`/posts/${title.id}`}>
-                  {title.title}
-                </Link>
-                <p className="title-list-description">{title.description}</p>
-              </div>
-            </li>
+            <Title key={title.id} title={title}/>
         )
         }
       </ul>
@@ -78,4 +49,4 @@ function mapStateToProps({titles, loading, err}) {
   }
 }
 
-export default connect(mapStateToProps, { getTitlesFromAPI, makeVoteFromAPI, clearErr })(TitleList);
+export default connect(mapStateToProps, { getTitlesFromAPI, clearErr })(TitleList);

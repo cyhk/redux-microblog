@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import { Form, Button } from "reactstrap";
 import { connect } from "react-redux";
 import { addPostFromAPI, editPostFromAPI } from "../actionCreators";
 import "./PostForm.css";
+import FormInput from "../components/FormInput";
 
 /**
  * PostForm: A generic form for adding and editing
@@ -14,7 +15,8 @@ class PostForm extends Component {
     this.state = {
       title: '',
       description: '',
-      body: ''
+      body: '',
+      invalidInputs: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -35,7 +37,7 @@ class PostForm extends Component {
       })
     }
   }
-  
+
   // update state
   handleChange(evt) {
     this.setState({
@@ -53,6 +55,11 @@ class PostForm extends Component {
       description,
       body
     };
+
+    if (!title || !description || !body) {
+      this.setState({ invalidInputs: true });
+      return;
+    }
 
     if (postId) {
       this.props.editPostFromAPI(postId, postDetails);
@@ -76,22 +83,13 @@ class PostForm extends Component {
 
   render() {
     const { title, description, body } = this.state;
-
     return (
       <div>
+        {this.state.invalidInputs && <p className="post-form-error-msg">Please fill in all fields</p>}
         <Form className="post-form" onSubmit={this.handleSubmit}>
-          <FormGroup className="post-form-group">
-            <div className="post-form-label"><Label>Title</Label></div>
-            <Input name="title" id="post-form-title" value={title} onChange={this.handleChange} />
-          </FormGroup>
-          <FormGroup className="post-form-group">
-            <div className="post-form-label"><Label>Description</Label></div>
-            <Input name="description" id="post-form-description" value={description} onChange={this.handleChange} />
-          </FormGroup>
-          <FormGroup className="post-form-group">
-            <div className="post-form-label"><Label >Body</Label></div>
-              <Input type="textarea" rows={15} name="body" id="post-form-body" value={body} onChange={this.handleChange} />
-          </FormGroup>
+          <FormInput handleChange={this.handleChange} name="title" type="text" value={title} />
+          <FormInput handleChange={this.handleChange} name="description" type="text" value={description} />
+          <FormInput handleChange={this.handleChange} name="body" type="textarea" rows={15} value={body} />
           <Button className="post-form-button" disabled={this.disable()}>Save</Button>
           <Button className="post-form-button" onClick={this.handleCancel}>Cancel</Button>
         </Form>

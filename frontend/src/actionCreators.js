@@ -55,112 +55,82 @@ function makeVote(id, votes) {
   return { type: CHANGE_VOTE, id, votes };
 }
 
-// function wrapWithSpinner(fn){
-//   dispatch(showSpinner());
-//   return function(){
-//     return fn()
-//   }
-// }
-
-export function getTitlesFromAPI() {
-  return async function (dispatch) {
+function wrapWithSpinner(fn) {
+  return function (dispatch) {
     dispatch(showSpinner());
+    return fn(dispatch);
+  }
+}
+
+function wrapTryCatch(fn) {
+  return async function (dispatch) {
     try {
-      let res = await axios.get(`${BASE_URL}posts`);
-      dispatch(getTitles(res.data));
+      return await fn(dispatch);
     } catch (err) {
       dispatch(showErr(err.message));
     }
   }
 }
-export function getPostFromAPI(id) {
-  return async function (dispatch) {
-    dispatch(showSpinner());
-    
-    try {
-      let res = await axios.get(`${BASE_URL}posts/${id}`);
 
-      dispatch(getPost(res.data));
-    } catch (err) {
-      dispatch(showErr(err.message));
+export function getTitlesFromAPI() {
+  return wrapWithSpinner(wrapTryCatch(async function (dispatch) {
+    let res = await axios.get(`${BASE_URL}posts`);
+    dispatch(getTitles(res.data));
+  }));
+}
+
+export function getPostFromAPI(id) {
+  return wrapWithSpinner(wrapTryCatch(async function (dispatch) {
+    let res = await axios.get(`${BASE_URL}posts/${id}`);
+    if (!res.data) {
+      throw new Error("Post not found");
     }
-  }
+    dispatch(getPost(res.data));
+  }));
 }
 
 // return action with type ADD_OR_EDIT_POST
 export function addPostFromAPI(postDetails) {
-  return async function (dispatch) {
-    dispatch(showSpinner());
-    
-    try {
-      let res = await axios.post(`${BASE_URL}posts/`, postDetails);
-
-      dispatch(addPost(res.data));
-    } catch (err) {
-      dispatch(showErr(err.message));
-    }
-  }
+  return wrapWithSpinner(wrapTryCatch(async function (dispatch) {
+    let res = await axios.post(`${BASE_URL}posts/`, postDetails);
+    dispatch(addPost(res.data));
+  }));
 }
 
 export function editPostFromAPI(id, postDetails) {
-  return async function (dispatch) {
-    dispatch(showSpinner());
-    
-    try {
-      let res = await axios.put(`${BASE_URL}posts/${id}`, postDetails);
-      dispatch(editPost(res.data));
-    } catch (err) {
-      dispatch(showErr(err.message));
-    }
-  }
+  return wrapWithSpinner(wrapTryCatch(async function (dispatch) {
+    let res = await axios.put(`${BASE_URL}posts/${id}`, postDetails);
+    dispatch(editPost(res.data));
+  }));
 }
 
 // return action with type DELETE_POST
 export function deletePostFromAPI(id) {
-  return async function (dispatch) {
-    dispatch(showSpinner());
-    
-    try {
-      await axios.delete(`${BASE_URL}posts/${id}`);
-      dispatch(deletePost(id));
-    } catch (err) {
-      dispatch(showErr(err.message));
-    }
-  }
+  return wrapWithSpinner(wrapTryCatch(async function (dispatch) {
+    await axios.delete(`${BASE_URL}posts/${id}`);
+    dispatch(deletePost(id));
+  }));
 }
 
 // return action with type ADD_COMMENT
 export function addCommentFromAPI(postId, comment) {
-  return async function (dispatch) {
-    try {
-      let res = await axios.post(`${BASE_URL}posts/${postId}/comments`, { text: comment });
-      dispatch(addComment(postId, res.data))
-    } catch (err) {
-      dispatch(showErr(err.message));
-    }
-  }
+  return wrapTryCatch(async function (dispatch) {
+    let res = await axios.post(`${BASE_URL}posts/${postId}/comments`, { text: comment });
+    dispatch(addComment(postId, res.data))
+  });
 }
 
 // return action with type DELETE_COMMENT
 export function deleteCommentFromAPI(postId, commentId) {
-  return async function (dispatch) {
-    try {
-      await axios.delete(`${BASE_URL}posts/${postId}/comments/${commentId}`);
-      dispatch(deleteComment(postId, commentId));
-    } catch (err) {
-      dispatch(showErr(err.message));
-    }
-  }
+  return wrapTryCatch(async function (dispatch) {
+    await axios.delete(`${BASE_URL}posts/${postId}/comments/${commentId}`);
+    dispatch(deleteComment(postId, commentId));
+  });
 }
 
 export function makeVoteFromAPI(id, vote) {
-  return async function (dispatch) {
-    try {
-      let res = await axios.post(`${BASE_URL}posts/${id}/vote/${vote}`);
-      
-      dispatch(makeVote(id, res.data.votes));
-    } catch (err) {
-      dispatch(showErr(err.message));
-    }
-  }
+  return wrapTryCatch(async function (dispatch) {
+    let res = await axios.post(`${BASE_URL}posts/${id}/vote/${vote}`);
+    dispatch(makeVote(id, res.data.votes));
+  })
 }
