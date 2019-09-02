@@ -1,60 +1,26 @@
+import { CLEAR_ERR } from "./actionTypes";
+
 import {
-  ADD_POST, EDIT_POST, DELETE_POST,
-  ADD_COMMENT, DELETE_COMMENT,
-  LOAD_TITLES, LOAD_POST,
-  SHOW_SPINNER, SHOW_ERR,
-  CLEAR_ERR, CHANGE_VOTE
-} from "./actionTypes.js";
+  showSpinner, showErr,
+  getTitles, getPost,
+  addPost, editPost,
+  deletePost, addComment,
+  deleteComment, makeVote
+} from "./actionCreatorHelpers";
 
 import { BASE_URL } from "./config";
 
 import axios from "axios";
 
-function showSpinner() {
-  return { type: SHOW_SPINNER }
-}
-
-function showErr(msg) {
-  return { type: SHOW_ERR, msg };
-}
-
 export function clearErr() {
   return { type: CLEAR_ERR };
 }
 
-function getTitles(titles) {
-  return { type: LOAD_TITLES, titles };
-}
+/**
+ * Action creator wrappers
+ */
 
-function getPost(post) {
-  return { type: LOAD_POST, post };
-}
-
-function addPost(postDetails) {
-  return { type: ADD_POST, postDetails };
-}
-
-function editPost(postDetails) {
-  return { type: EDIT_POST, postDetails };
-}
-
-function deletePost(id) {
-  return { type: DELETE_POST, id };
-}
-
-function addComment(postId, commentDetails) {
-  const { id, text } = commentDetails;
-  return { type: ADD_COMMENT, payload: { commentId: id, text, postId } };
-}
-
-function deleteComment(postId, commentId) {
-  return { type: DELETE_COMMENT, postId, commentId };
-}
-
-function makeVote(id, votes) {
-  return { type: CHANGE_VOTE, id, votes };
-}
-
+ // wrapper to include dispatch to loading
 function wrapWithSpinner(fn) {
   return function (dispatch) {
     dispatch(showSpinner());
@@ -62,6 +28,7 @@ function wrapWithSpinner(fn) {
   }
 }
 
+ // wrapper to include try catch block
 function wrapTryCatch(fn) {
   return async function (dispatch) {
     try {
@@ -72,65 +39,107 @@ function wrapTryCatch(fn) {
   }
 }
 
+/**
+ * Title action creators
+ */
+
+// gets titles from API and 
+// dispatches action type to add
+// titles to redux state
 export function getTitlesFromAPI() {
   return wrapWithSpinner(wrapTryCatch(async function (dispatch) {
     let res = await axios.get(`${BASE_URL}posts`);
+
     dispatch(getTitles(res.data));
   }));
 }
 
+/**
+ * Post action creators
+ */
+
+// get a post from API and
+// dispatches action type to add post
+// to redux state
 export function getPostFromAPI(id) {
   return wrapWithSpinner(wrapTryCatch(async function (dispatch) {
     let res = await axios.get(`${BASE_URL}posts/${id}`);
+
     if (!res.data) {
       throw new Error("Post not found");
     }
+
     dispatch(getPost(res.data));
   }));
 }
 
-// return action with type ADD_OR_EDIT_POST
+// makes a new post with API and
+// dispatches action type to add post
+// to redux state
 export function addPostFromAPI(postDetails) {
   return wrapWithSpinner(wrapTryCatch(async function (dispatch) {
     let res = await axios.post(`${BASE_URL}posts/`, postDetails);
+
     dispatch(addPost(res.data));
   }));
 }
 
+// updates post with API and
+// dispatches action type to update post
+// tinredux state
 export function editPostFromAPI(id, postDetails) {
   return wrapWithSpinner(wrapTryCatch(async function (dispatch) {
     let res = await axios.put(`${BASE_URL}posts/${id}`, postDetails);
+
     dispatch(editPost(res.data));
   }));
 }
 
-// return action with type DELETE_POST
+// deletes a post using API and
+// dispatches action type to delete post
+// from redux state
 export function deletePostFromAPI(id) {
   return wrapWithSpinner(wrapTryCatch(async function (dispatch) {
     await axios.delete(`${BASE_URL}posts/${id}`);
+
     dispatch(deletePost(id));
   }));
 }
 
-// return action with type ADD_COMMENT
+
+/**
+ * Comment action creators
+ */
+
+// adds a comment with API and
+// dispatches action type to add comment
+// to redux state
 export function addCommentFromAPI(postId, comment) {
   return wrapTryCatch(async function (dispatch) {
     let res = await axios.post(`${BASE_URL}posts/${postId}/comments`, { text: comment });
+
     dispatch(addComment(postId, res.data))
   });
 }
 
-// return action with type DELETE_COMMENT
+// deletes a comment from API and
+// dispatches action type to delete post
+// from redux state
 export function deleteCommentFromAPI(postId, commentId) {
   return wrapTryCatch(async function (dispatch) {
     await axios.delete(`${BASE_URL}posts/${postId}/comments/${commentId}`);
+
     dispatch(deleteComment(postId, commentId));
   });
 }
 
+// upvote or downvote with API and
+// dispatches action type to update votes
+// in redux state
 export function makeVoteFromAPI(id, vote) {
   return wrapTryCatch(async function (dispatch) {
     let res = await axios.post(`${BASE_URL}posts/${id}/vote/${vote}`);
+
     dispatch(makeVote(id, res.data.votes));
   })
 }
