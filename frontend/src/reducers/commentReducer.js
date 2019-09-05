@@ -8,13 +8,12 @@ const INITIAL_STATE = {
   loading: true,
   err: false
 };
+
 /**
  * commentReducer: 
  * add, edit, or delete post;
  * add or delete comment
  */
-
-
 function commentReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case ADD_COMMENT: {
