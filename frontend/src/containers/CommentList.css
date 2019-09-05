@@ -1,0 +1,25 @@
+.comment-list {
+  text-align: left;
+  width: 100%;
+  margin-top: 5%;
+  overflow-wrap: break-word;
+}
+
+.comment-submit-box {
+  font-size: 11pt;
+}
+
+.comment-submit-button {
+  border: 1px solid salmon;
+  color: white;
+  font-weight: bold;
+  background-color: salmon;
+  margin-left: 5px;
+  font-size: 11pt;
+}
+
+.comment-submit-button:disabled {
+  border: 1px solid darksalmon;
+  background-color: darksalmon;
+
+}

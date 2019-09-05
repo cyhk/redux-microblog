@@ -1,0 +1,56 @@
+.post-form {
+  margin-top: 15px;
+}
+#post-form-title {
+  border-radius: 3px;
+  width: 70%;
+  height: 20pt;
+  font-size: 20pt;
+  border: none;
+}
+
+#post-form-description {
+  border-radius: 3px;
+  width: 70%;
+  height: 20pt;
+  font-size: 15pt;
+  border: none;
+}
+
+#post-form-body {
+  border-radius: 3px;
+  width: 70%;
+  font-size: 12pt;
+  border: none;
+}
+
+.post-form-label {
+  margin-bottom: 5px;
+  position: absolute;
+}
+
+.post-form-group {
+  margin: 10px;
+}
+
+.post-form-button {
+   border: none;
+   background-color: lightsalmon;
+   color: white;
+   font-size: 12pt;
+   margin: 5px;
+   padding: 0.5em;
+}
+
+.post-form-button:disabled {
+  border: none;
+  background-color: darksalmon;
+  color: white;
+  font-size: 12pt;
+  margin: 5px;
+  padding: 0.5em;
+}
+
+.post-form-error-msg {
+  color: rgb(240, 79, 61);
+}

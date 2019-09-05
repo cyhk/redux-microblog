@@ -1,0 +1,8 @@
+.comment-delete-button {
+  border: 1px solid salmon;
+  color: white;
+  font-weight: bold;
+  background-color: salmon;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
