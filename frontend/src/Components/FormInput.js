@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { FormGroup, Label, Input } from "reactstrap";
 
 /**
@@ -9,7 +9,7 @@ class FormInput extends Component {
     super(props);
 
     this.state = {
-      value: ''
+      value: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -20,19 +20,24 @@ class FormInput extends Component {
   componentDidUpdate() {
     const { value } = this.props;
     this.setState({
-      value: value === undefined ? '' : value
+      value: value === undefined ? "" : value
     });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.state.value !== nextState.value || this.props.value !== nextProps.value;
+    return (
+      this.state.value !== nextState.value ||
+      this.props.value !== nextProps.value
+    );
   }
 
   // update state
   handleChange(evt) {
     this.setState({
       value: evt.target.value
-    })
+    }, function() {
+      console.log(this.state);
+    });
     this.props.handleChange(evt);
   }
 
@@ -41,11 +46,21 @@ class FormInput extends Component {
     return (
       <div>
         <FormGroup className="post-form-group">
-          <div className="post-form-label"><Label>{name[0].toUpperCase() + name.slice(1)}</Label></div>
-          <Input name={name} type={type} rows={rows} id={`post-form-${name}`} value={this.state.value} onChange={this.handleChange} />
+          <div className="post-form-label">
+            <Label>{name[0].toUpperCase() + name.slice(1)}</Label>
+          </div>
+          <Input
+            name={name}
+            type={type}
+            rows={rows}
+            id={`post-form-${name}`}
+            value={this.state.value}
+            onChange={this.handleChange}
+            data-testid={`post-form-${name}`}
+          />
         </FormGroup>
       </div>
-    )
+    );
   }
 }
 
