@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import { makeVoteFromAPI } from "../actionCreators";
 
 const Title = React.memo(({title, makeVoteFromAPI}) => {
-
-
   const handleUpvote = (evt) => {
     const id = evt.target.name;
     makeVoteFromAPI(id, "up");
