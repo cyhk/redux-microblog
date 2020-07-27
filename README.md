@@ -2,13 +2,13 @@
 
 A blogging app that includes basic blogging functionalities such as adding, editing, and deleting posts and comments, as well as up/down voting posts. Built with React and Redux.
 
-Collaborated with @andrewsli
+Pair programmed with [Andrew Li](https://github.com/andrewsli).
 
 ## Getting started
 
 1. Clone this repo to your local machine 
 ```
-git clone https://github.com/andrewsli/redux-microblog.git
+git clone https://github.com/cyhk/redux-microblog.git
 ```
 2. cd into the "backend" directory, install required packages, prepare database, and start the server
 ```
